@@ -14,12 +14,10 @@ public class Menu {
 	public static void main(String[] args) {
 		ContaController contas = new ContaController();  //Cria um Objeto da Classe ContaController, para armazenar os dados das contas na Collection listaContas e executar os Métodos do CRUD e os Métodos Bancários.
 
-		
-		
-		
-		int opcao , numero , agencia , tipo , aniversario;
+				
+		int opcao , numero , agencia , tipo , aniversario , numeroDestino;
 		String titular;
-		float saldo , limite;
+		float saldo , limite , valor;
 		
 		System.out.println("\nCriar Contas \n");
 		
@@ -38,9 +36,10 @@ public class Menu {
 		contas.listarTodas();
 		
 		while (true) {
-
-			System.out.println(Cores.TEXT_YELLOW + Cores.ANSI_BLACK_BACKGROUND
-					        + "*****************************************************");
+			 clearConsole();
+			 
+			System.out.println(Cores.TEXT_BLUE_BOLD + Cores.ANSI_BLACK_BACKGROUND
+					        + "******************************************************");
 			System.out.println("                                                     ");
 			System.out.println("               BANCO DO BRAZIL COM Z                 ");
 			System.out.println("                                                     ");
@@ -50,7 +49,7 @@ public class Menu {
 			System.out.println("               2 - Listar todas as Contas            ");
 			System.out.println("               3 - Buscar Conta por Numero           ");
 			System.out.println("               4 - Atualizar Dados da Conta          ");
-			System.out.println("               5 - Apagar Cont                       ");
+			System.out.println("               5 - Apagar Conta                      ");
 			System.out.println("               6 - Sacar                             ");
 			System.out.println("               7 - Depositar                         ");
 			System.out.println("               8 - Transferir valores entre Contas   ");
@@ -179,17 +178,52 @@ public class Menu {
 				break;
 
 			case 6:
-				System.out.println(Cores.TEXT_WHITE_BOLD + "Saque\n\n");
+				System.out.println(Cores.TEXT_WHITE_BOLD + "Saque\n");
+				
+				System.out.println("Digite o Número da Conta: "); //Foi criada a entrada de dados, via teclado, para a variável numero.
+				numero = leia.nextInt();
+			
+			do {
+					System.out.println("Digite o Valor do Saque (R$): ");
+					valor = leia.nextFloat(); //Foi criada a chamada para o Método sacar(), criado na Classe ContaController. Na chamada do Método foram inseridos 2 parâmetros: número (da conta que será sacado) e valor (quanto será debitado)
+			}while(valor <= 0);  //Foi criado um Laço de repetição do...while, para garantir que a variável valor receba via teclado um numero positivo e maior do que zero.
+		
+				contas.sacar(numero ,  valor);
+			
 				keyPress();
 				break;
 
 			case 7:
 				System.out.println(Cores.TEXT_WHITE_BOLD + "Depósito\n\n");
+				
+				System.out.println("Digite o Número da Conta: ");
+				numero = leia.nextInt();
+				
+			do {
+					System.out.println("Digite o Valor do Depósito (R$): ");
+					valor = leia.nextFloat();
+			}while(valor <= 0);
+			
+				contas.depositar(numero, valor);
+					
 				keyPress();
 				break;
-
+			
 			case 8:
 				System.out.println(Cores.TEXT_WHITE_BOLD + "Transferência entre Contas\n\n");
+				
+				System.out.println("Digite o Número da Conta de Origem: ");
+				numero = leia.nextInt();
+				System.out.println("Digite o Número da Conta de Destino: ");
+				numeroDestino = leia.nextInt();
+				
+			do {
+				System.out.println("Digite o Valor da Transferência (R$): ");
+				valor = leia.nextFloat();
+			}while (valor <= 0);
+			
+			contas.transferir(numero, numeroDestino, valor);
+			
 				keyPress();
 				break;
 			default:
@@ -210,6 +244,19 @@ public class Menu {
 				System.out.println("Você pressionou uma tecla diferente de Enter! ");
 
 		}
+	}	
+		public static void clearConsole() {
+	        try {
+	            // Verifica o sistema operacional para executar o comando de limpar o console apropriado
+	            String os = System.getProperty("os.name").toLowerCase();
+	            if (os.contains("windows")) {
+	                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+	            } else {
+	                Runtime.getRuntime().exec("clear");
+	            }
+	        } catch (IOException | InterruptedException e) {
+	            e.printStackTrace();
+	        }
 	}
 		
 }

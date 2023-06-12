@@ -1,5 +1,7 @@
 package conta.model;
 
+
+
 public abstract class Conta {
 
 	private int numero;
@@ -84,9 +86,13 @@ public abstract class Conta {
 		break;
 		}
 		
-		System.out.println("\n***********************************************************");
-		System.out.println("Dados da Conta: ");
+		System.out.println("\033[1;34m"); // Define a cor vermelha e o negrito
 		System.out.println("***********************************************************");
+		System.out.println("\u001B[0m"); // Reseta a formatação para o padrão
+		System.out.println("Dados da Conta: ");
+		System.out.println("\033[1;34m"); 
+		System.out.println("***********************************************************");
+		System.out.println("\u001B[0m"); 
 		System.out.println("Número da Conta: " + this.numero);
 		System.out.println("Agência: " + this.agencia);
 		System.out.println("Tipo de Conta: " + tipo);

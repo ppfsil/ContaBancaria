@@ -42,7 +42,7 @@ public class ContaController implements ContaRepository {  //Palavra reservada i
 		
 		if(buscaConta != null) {   //Linhas 43 a 45: Através do Laço Condicional, verifica se o Objeto Conta foi encontrado.
 			listaContas.set(listaContas.lastIndexOf(buscaConta), conta);
-			System.out.println("nA Conta numero: " + conta.getNumero() + "não foi encontrada!");
+			System.out.println("\nA Conta numero: " + conta.getNumero() + "não foi encontrada!");
 			
 		}
 		
@@ -60,22 +60,43 @@ public class ContaController implements ContaRepository {  //Palavra reservada i
 	
 		}
 	@Override
-	public void sacar(int numero, float valor) {
-		// TODO Auto-generated method stub
+	public void sacar(int numero, float valor) {  //Foram inseridos 2 parâmetros - numero: Número da conta que será efetuada a operação de Saque. e valor: valor que será debitado da conta.
+		var conta = buscarNaCollection(numero);   //Antes de Efetuar o saque na conta, precisamos verificar se a conta existe. Observe que foi criada a variável local buscaConta, para receber o Objeto da Classe Conta, que foi encontrado na Collection listaContas.
+	if(conta != null) {                  //Através do Laço Condicional, verifica se o Objeto Conta foi encontrado
+		if(conta.sacar(valor)== true)
+			System.out.println("\nO Saque na Conta Corrente " +numero + " foi efetuado com sucesso!");
+	}else
+		System.out.println("\nA Conta numero: " + numero + " não foi encontrada!");
 		
 	}
 
 	@Override
-	public void depositar(int numero, float valor) {
-		// TODO Auto-generated method stub
+	public void depositar(int numero, float valor) { //Antes de Efetuar o depósito na conta, precisamos verificar se a conta existe. Observe que foi criada a variável local conta, para receber o Objeto da Classe Conta, que foi encontrado na Collection listaContas. Esse Objeto foi criado através da palavra reservada var. Por inferência, a palavra reservada var entende que a variável conta, deve ser um Objeto da Classe Conta, porque receberá o retorno do Método buscarNaCollection.
+		var conta = buscarNaCollection(numero);
+		
+	if(conta != null) { //Através do Laço Condicional, verifica se o Objeto Conta foi encontrado 
+		conta.depositar(valor);
+		System.out.println("\nO Depósito na Conta Número: " + numero + " feoi efetuada com sucesso!");
+	}else
+		System.out.println("\n A Conta Número: " + numero + " não foi encontrada ou Conta destino não é uma Conta Corrente!");
 		
 	}
 
 	@Override
 	public void transferir(int numeroOrigem, int numeroDestino, float valor) {
-				
-	}
-	
+		var contaOrigem = buscarNaCollection(numeroDestino);
+		var contaDestino = buscarNaCollection(numeroDestino);
+		
+	if (contaOrigem != null && contaDestino != null) {
+		
+	if (contaOrigem.sacar(valor)== true) {	
+		contaDestino.depositar(valor);
+		System.out.println("\nA Transferência foi Efetuada com Sucesso!");
+  }
+	} else
+		System.out.println("\nConta de Origem e/ou Destino não foram encontradas!");	
+}
+
 public int gerarNumero() {   //Para gerar automaticamente o número da conta, vamos criar o Método auxiliar gerarNumero(), no final da Classe ContaController, através do código abaixo:
 	return ++ numero;
 }
